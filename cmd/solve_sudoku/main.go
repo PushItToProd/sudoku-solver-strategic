@@ -20,7 +20,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	s, err := sudoku.New(puzzleStr)
+	_, err := sudoku.New(puzzleStr)
 	if err != nil {
 		fmt.Println(err.Error())
 		fmt.Println("unsolvable")
@@ -28,7 +28,11 @@ func main() {
 		return
 	}
 
-
+	state := sudoku.Check(puzzleStr)
+	if state.IsSolved() {
+		fmt.Println("already solved")
+		return
+	}
 
 	switch puzzleStr {
 	case "238956417756214938491387256685791342349628175127435689562173894814569723973842561":

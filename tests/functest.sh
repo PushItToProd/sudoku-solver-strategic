@@ -2,6 +2,7 @@
 
 SCRIPT_DIR="$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)"
 ROOT_DIR="$SCRIPT_DIR/.."
+PUZZLES_DIR="$SCRIPT_DIR/puzzles"
 
 failed=0
 
@@ -51,6 +52,14 @@ solve_sudoku() {
   run_cmd cmd/solve_sudoku "$@"
 }
 
+read_puzzle() {
+  local puzzle_path="$PUZZLES_DIR"/"$1"
+  if [[ ! -f "$puzzle_path" ]]; then
+    test::fatal "Unable to get puzzle with id '$1'"
+  fi
+  tr -d ' \n' <"$puzzle_path"
+}
+
 main() {
   output="$(solve_sudoku 2>&1)"
   if [[ "$output" != *'sudoku'* ]]; then
@@ -64,6 +73,16 @@ main() {
   fi
   if [[ "$output" != *"invalid puzzle"* ]]; then
     test::fail "Expected output to contain 'invalid puzzle'"
+  fi
+
+  puzzle="$(read_puzzle 1)"
+  output="$(solve_sudoku "$puzzle")"
+  exit_code=$?
+  if (( exit_code != 0 )); then
+    test::fail "Expected successful exit code (0) when a valid and solved puzzle is given"
+  fi
+  if [[ "$output" != *"already solved"* ]]; then
+    test::fail "Expected output to contain 'already solved'"
   fi
 
   test::check_result

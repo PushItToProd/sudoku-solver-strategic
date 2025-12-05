@@ -13,7 +13,10 @@ func main() {
 	}
 
 	puzzleStr := args[0]
-	_ = puzzleStr
-	fmt.Println("invalid puzzle")
-	os.Exit(1)
+	if len(puzzleStr) != 81 {
+		fmt.Println("invalid puzzle")
+		os.Exit(1)
+	}
+
+	fmt.Println("already solved")
 }

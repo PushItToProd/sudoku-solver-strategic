@@ -1,0 +1,106 @@
+package sudoku_test
+
+import (
+	"strings"
+	"testing"
+
+	"github.com/pushittoprod/sudoku-solver-strategic/pkg/sudoku"
+)
+
+func TestNew(t *testing.T) {
+	testCases := []struct {
+		desc           string
+		puzzle         string
+		expectErr      bool
+		expectedErrMsg string
+	}{
+		{
+			desc:           "too short",
+			puzzle:         "123",
+			expectErr:      true,
+			expectedErrMsg: "too short",
+		},
+		{
+			desc:           "too long",
+			puzzle:         "0389564177562149384913872566857913423496281751274356895621738948145697239738425619",
+			expectErr:      true,
+			expectedErrMsg: "too long",
+		},
+		{
+			desc:      "valid and unsolved",
+			puzzle:    "038956417756214938491387256685791342349628175127435689562173894814569723973842561",
+			expectErr: false,
+		},
+		{
+			desc:      "invalid and unsolved",
+			puzzle:    "028956417756214938491387256685791342349628175127435689562173894814569723973842561",
+			expectErr: true,
+		},
+		{
+			desc:      "invalid and complete",
+			puzzle:    "228956417756214938491387256685791342349628175127435689562173894814569723973842561",
+			expectErr: true,
+		},
+	}
+	for _, tc := range testCases {
+		t.Run(tc.desc, func(t *testing.T) {
+			_, err := sudoku.New(tc.puzzle)
+
+			if tc.expectErr {
+				if err == nil {
+					t.Error("expected error but got none")
+				} else if gotErrMsg := err.Error(); tc.expectedErrMsg != "" && !strings.Contains(gotErrMsg, tc.expectedErrMsg) {
+					t.Errorf("expected error containing %q but got %q", tc.expectedErrMsg, gotErrMsg)
+				}
+			} else if !tc.expectErr && err != nil {
+				t.Errorf("expected no error but got %v", err)
+			}
+		})
+	}
+}
+
+func TestIsValidSudoku(t *testing.T) {
+	testCases := []struct {
+		desc    string
+		puzzle  string
+		isValid bool
+	}{
+		{
+			desc:    "too short",
+			puzzle:  "123",
+			isValid: false,
+		},
+		{
+			desc:    "too long",
+			puzzle:  "0389564177562149384913872566857913423496281751274356895621738948145697239738425619",
+			isValid: false,
+		},
+		{
+			desc:    "invalid characters",
+			puzzle:  "zz8956417756214938491387256685791342349628175127435689562173894814569723973842561",
+			isValid: false,
+		},
+		{
+			desc:    "valid and unsolved",
+			puzzle:  "038956417756214938491387256685791342349628175127435689562173894814569723973842561",
+			isValid: true,
+		},
+		{
+			desc:    "invalid and unsolved",
+			puzzle:  "028956417756214938491387256685791342349628175127435689562173894814569723973842561",
+			isValid: false,
+		},
+		{
+			desc:    "invalid and complete",
+			puzzle:  "228956417756214938491387256685791342349628175127435689562173894814569723973842561",
+			isValid: false,
+		},
+	}
+	for _, tc := range testCases {
+		t.Run(tc.desc, func(t *testing.T) {
+			if got := sudoku.IsValidSudoku(tc.puzzle); got != tc.isValid {
+				t.Errorf("expected %v but got %v", tc.isValid, got)
+			}
+		})
+	}
+}

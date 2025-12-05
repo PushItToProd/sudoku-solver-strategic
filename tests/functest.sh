@@ -47,12 +47,9 @@ run_cmd() {
   go run "$ROOT_DIR"/"$cmd" "$@"
 }
 
-
-
-
 main() {
-  if ! run_cmd cmd/hello | grep -q Hello; then
-    test::fail "Expected 'Hello' in cmd/hello output"
+  if ! run_cmd cmd/solve_sudoku | grep -qi 'sudoku'; then
+    test::fail "Expected 'sudoku' in cmd/solve_sudoku output"
   fi
 
   test::check_result

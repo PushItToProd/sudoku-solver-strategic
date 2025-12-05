@@ -75,14 +75,15 @@ main() {
     test::fail "Expected output to contain 'invalid puzzle'"
   fi
 
+  # puzzle 1
   puzzle_1_solved="$(read_puzzle 1.solved)"
   output="$(solve_sudoku "$puzzle_1_solved")"
   exit_code=$?
   if (( exit_code != 0 )); then
-    test::fail "(puzzle 1) Expected successful exit code (0) when a valid and solved puzzle is given"
+    test::fail "(puzzle 1.solved) Expected successful exit code (0) when a valid and solved puzzle is given"
   fi
   if [[ "$output" != *"already solved"* ]]; then
-    test::fail "(puzzle 1) Expected output to contain 'already solved'"
+    test::fail "(puzzle 1.solved) Expected output to contain 'already solved'"
   fi
 
   puzzle_1="$(read_puzzle 1)"
@@ -94,19 +95,31 @@ main() {
   if [[ "$output" == *"already solved"* ]]; then
     test::fail "(puzzle 1) Expected output to not contain 'already solved'"
   fi
-
   if [[ "$output" != *"$puzzle_1_solved"* ]]; then
     test::fail "(puzzle 1) Expected output to contain the puzzle solution with zeroes replaced with solved digits"
   fi
 
+  # puzzle 2 - invalid
+  puzzle2_invalid="$(read_puzzle 2.invalid)"
+  output="$(solve_sudoku "$puzzle2_invalid")"
+  exit_code=$?
+  if (( exit_code == 0 )); then
+    test::fail "(puzzle 2.invalid) Expected nonzero exit code when an unsolvable puzzle is given"
+  fi
+  if [[ "$output" != *"unsolvable"* ]]; then
+    test::fail "(puzzle 2.invalid) Expected output to contain 'unsolvable'"
+  fi
+
+
+  # puzzle 2
   puzzle_2_solved="$(read_puzzle 2.solved)"
   output="$(solve_sudoku "$puzzle_2_solved")"
   exit_code=$?
   if (( exit_code != 0 )); then
-    test::fail "(puzzle 2) Expected successful exit code (0) when a valid and solved puzzle is given"
+    test::fail "(puzzle 2.solved) Expected successful exit code (0) when a valid and solved puzzle is given"
   fi
   if [[ "$output" != *"already solved"* ]]; then
-    test::fail "(puzzle 2) Expected output to contain 'already solved'"
+    test::fail "(puzzle 2.solved) Expected output to contain 'already solved'"
   fi
 
   puzzle_2="$(read_puzzle 2)"
@@ -118,7 +131,6 @@ main() {
   if [[ "$output" == *"already solved"* ]]; then
     test::fail "(puzzle 2) Expected output to not contain 'already solved'"
   fi
-
   if [[ "$output" != *"$puzzle_2_solved"* ]]; then
     test::fail "(puzzle 2) Expected output to contain the puzzle solution with zeroes replaced with solved digits"
   fi

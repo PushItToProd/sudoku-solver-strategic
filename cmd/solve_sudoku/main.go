@@ -1,7 +1,19 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+)
 
 func main() {
-	fmt.Println("sudoku")
+	args := os.Args[1:]
+	if len(args) == 0 {
+		fmt.Println("sudoku")
+		return
+	}
+
+	puzzleStr := args[0]
+	_ = puzzleStr
+	fmt.Println("invalid puzzle")
+	os.Exit(1)
 }

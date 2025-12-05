@@ -47,9 +47,23 @@ run_cmd() {
   go run "$ROOT_DIR"/"$cmd" "$@"
 }
 
+solve_sudoku() {
+  run_cmd cmd/solve_sudoku "$@"
+}
+
 main() {
-  if ! run_cmd cmd/solve_sudoku | grep -qi 'sudoku'; then
-    test::fail "Expected 'sudoku' in cmd/solve_sudoku output"
+  output="$(solve_sudoku 2>&1)"
+  if [[ "$output" != *'sudoku'* ]]; then
+    test::fail "Expected 'sudoku' in cmd/solve_sudoku output when no inputs given"
+  fi
+
+  output="$(solve_sudoku 123 2>&1)"
+  exit_code=$?
+  if (( exit_code == 0 )); then
+    test::fail "Expected nonzero exit code when an invalid puzzle is given"
+  fi
+  if [[ "$output" != *"invalid puzzle"* ]]; then
+    test::fail "Expected output to contain 'invalid puzzle'"
   fi
 
   test::check_result

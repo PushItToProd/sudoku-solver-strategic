@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
+
+	"github.com/pushittoprod/sudoku-solver-strategic/pkg/sudoku"
 )
 
 func main() {
@@ -17,6 +19,16 @@ func main() {
 		fmt.Println("invalid puzzle")
 		os.Exit(1)
 	}
+
+	s, err := sudoku.New(puzzleStr)
+	if err != nil {
+		fmt.Println(err.Error())
+		fmt.Println("unsolvable")
+		os.Exit(1)
+		return
+	}
+
+
 
 	switch puzzleStr {
 	case "238956417756214938491387256685791342349628175127435689562173894814569723973842561":

@@ -52,12 +52,20 @@ solve_sudoku() {
   run_cmd cmd/solve_sudoku "$@"
 }
 
+squash_arg() {
+  squash_stdin <<<"$1"
+}
+
+squash_stdin() {
+  tr -d ' \n'
+}
+
 read_puzzle() {
   local puzzle_path="$PUZZLES_DIR"/"$1"
   if [[ ! -f "$puzzle_path" ]]; then
     test::fatal "Unable to get puzzle with id '$1'"
   fi
-  tr -d ' \n' <"$puzzle_path"
+  squash_stdin <"$puzzle_path"
 }
 
 main() {
@@ -100,13 +108,13 @@ main() {
   if [[ "$output" == *"already solved"* ]]; then
     test::fail "(puzzle 1) Expected output to not contain 'already solved'"
   fi
-  if [[ "$output" != *"$puzzle_1_solved"* ]]; then
+  if [[ "$(squash_arg "$output")" != *"$puzzle_1_solved"* ]]; then
     test::fail "(puzzle 1) Expected output to contain the puzzle solution with zeroes replaced with solved digits"
   fi
 
   # puzzle 2 - invalid
   puzzle2_invalid="$(read_puzzle 2.invalid)"
-  output="$(solve_sudoku "$puzzle2_invalid")"
+  output="$(solve_sudoku "$puzzle2_invalid" 2>&1)"
   exit_code=$?
   if (( exit_code == 0 )); then
     test::fail "(puzzle 2.invalid) Expected nonzero exit code when an unsolvable puzzle is given"
@@ -136,7 +144,7 @@ main() {
   if [[ "$output" == *"already solved"* ]]; then
     test::fail "(puzzle 2) Expected output to not contain 'already solved'"
   fi
-  if [[ "$output" != *"$puzzle_2_solved"* ]]; then
+  if [[ "$(squash_arg "$output")" != *"$puzzle_2_solved"* ]]; then
     test::fail "(puzzle 2) Expected output to contain the puzzle solution with zeroes replaced with solved digits"
   fi
 

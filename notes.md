@@ -39,8 +39,7 @@ So far I have:
 
 ### Main open items, ideas, etc.
 
-
+- [x] implement solving: use my bruteforce solver implementation to get output working for now
 - `solve_sudoku` entrypoint
   - [ ] validation and error reporting - `solve_sudoku` should rely on `sudoku.New()` to report error states
   - [ ] factor out argument parsing and invocation of the `sudoku` package
-- [ ] implement solving: use my bruteforce solver implementation to get output working for now

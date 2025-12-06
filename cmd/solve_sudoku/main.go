@@ -17,6 +17,10 @@ func main() {
 	}
 
 	puzzleStr := args[0]
+	solveSudoku(puzzleStr)
+}
+
+func solveSudoku(puzzleStr string) {
 	if len(puzzleStr) != 81 {
 		fmt.Println("invalid puzzle")
 		os.Exit(1)

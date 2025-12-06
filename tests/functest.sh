@@ -61,7 +61,12 @@ read_puzzle() {
 }
 
 main() {
+  # Running the program with no inputs emits some kind of help text
   output="$(solve_sudoku 2>&1)"
+  exit_code=$?
+  if (( exit_code == 0 )); then
+    test::fail "Expected nonzero exit code when no puzzle is given"
+  fi
   if [[ "$output" != *'sudoku'* ]]; then
     test::fail "Expected 'sudoku' in cmd/solve_sudoku output when no inputs given"
   fi

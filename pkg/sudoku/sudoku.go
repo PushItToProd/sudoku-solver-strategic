@@ -4,15 +4,29 @@ import "errors"
 
 type BoardState string
 
+var (
+	ErrTooShort      = errors.New("too short")
+	ErrTooLong       = errors.New("too long")
+	ErrInvalid       = errors.New("invalid puzzle")
+	ErrAlreadySolved = errors.New("already solved")
+)
+
 func New(puzzle string) (BoardState, error) {
 	if len(puzzle) < 81 {
-		return "", errors.New("too short")
+		return "", ErrTooShort
 	}
 	if len(puzzle) > 81 {
-		return "", errors.New("too long")
+		return "", ErrTooLong
 	}
 	if !IsValidSudoku(puzzle) {
-		return "", errors.New("invalid sudoku")
+		return "", ErrInvalid
+	}
+	state := Check(puzzle)
+	if !state.IsValid() {
+		return "", ErrInvalid
+	}
+	if state.IsSolved() {
+		return "", ErrAlreadySolved
 	}
 	return BoardState(puzzle), nil
 }

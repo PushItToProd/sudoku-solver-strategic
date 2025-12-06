@@ -41,6 +41,12 @@ func TestNew(t *testing.T) {
 			puzzle:    "228956417756214938491387256685791342349628175127435689562173894814569723973842561",
 			expectErr: true,
 		},
+		{
+			desc:           "fully solved",
+			puzzle:         "238956417756214938491387256685791342349628175127435689562173894814569723973842561",
+			expectErr:      true,
+			expectedErrMsg: "already solved",
+		},
 	}
 	for _, tc := range testCases {
 		t.Run(tc.desc, func(t *testing.T) {

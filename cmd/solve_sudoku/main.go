@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"os"
 
@@ -21,23 +22,15 @@ func main() {
 }
 
 func solveSudoku(puzzleStr string) {
-	if len(puzzleStr) != 81 {
-		fmt.Println("invalid puzzle")
-		os.Exit(1)
-	}
-
 	_, err := sudoku.New(puzzleStr)
-	if err != nil {
-		fmt.Println(err.Error())
-		fmt.Println("unsolvable")
-		os.Exit(1)
-		return
-	}
-
-	state := sudoku.Check(puzzleStr)
-	if state.IsSolved() {
+	if errors.Is(err, sudoku.ErrAlreadySolved) {
+		// Puzzle is already solved, just print it as is
 		fmt.Println("already solved")
 		return
+	}
+	if err != nil {
+		fmt.Println(err.Error())
+		os.Exit(1)
 	}
 
 	// Simple bruteforce solver for now

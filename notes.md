@@ -41,5 +41,5 @@ So far I have:
 
 - [x] implement solving: use my bruteforce solver implementation to get output working for now
 - `solve_sudoku` entrypoint
-  - [ ] validation and error reporting - `solve_sudoku` should rely on `sudoku.New()` to report error states
-  - [ ] factor out argument parsing and invocation of the `sudoku` package
+  - [x] validation and error reporting - `solve_sudoku` should rely on `sudoku.New()` to report error states
+  - [x] factor out argument parsing and invocation of the `sudoku` package

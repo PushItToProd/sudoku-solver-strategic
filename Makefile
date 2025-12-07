@@ -3,7 +3,7 @@ test: functest unittest
 
 .PHONY: functest
 functest:
-	bash tests/functest.sh
+	pnpm test
 
 .PHONY: unittest
 unittest:

@@ -18,6 +18,8 @@ func New(puzzle string) (BoardState, error) {
 	if len(puzzle) > 81 {
 		return "", ErrTooLong
 	}
+	// FIXME: remove this.
+	// Currently, tests/puzzles/2.invalid is incorrectly accepted if this check isn't here.
 	if !IsValidSudoku(puzzle) {
 		return "", ErrInvalid
 	}
@@ -30,47 +32,6 @@ func New(puzzle string) (BoardState, error) {
 	}
 	return BoardState(puzzle), nil
 }
-
-// cellHouses is a lookup table mapping cell indices to house numbers.
-var cellHouses = [81]int{
-	0, 0, 0, 1, 1, 1, 2, 2, 2,
-	0, 0, 0, 1, 1, 1, 2, 2, 2,
-	0, 0, 0, 1, 1, 1, 2, 2, 2,
-
-	3, 3, 3, 4, 4, 4, 5, 5, 5,
-	3, 3, 3, 4, 4, 4, 5, 5, 5,
-	3, 3, 3, 4, 4, 4, 5, 5, 5,
-
-	6, 6, 6, 7, 7, 7, 8, 8, 8,
-	6, 6, 6, 7, 7, 7, 8, 8, 8,
-	6, 6, 6, 7, 7, 7, 8, 8, 8,
-}
-
-var cellRows = [81]int{
-	0, 0, 0, 0, 0, 0, 0, 0, 0,
-	1, 1, 1, 1, 1, 1, 1, 1, 1,
-	2, 2, 2, 2, 2, 2, 2, 2, 2,
-	3, 3, 3, 3, 3, 3, 3, 3, 3,
-	4, 4, 4, 4, 4, 4, 4, 4, 4,
-	5, 5, 5, 5, 5, 5, 5, 5, 5,
-	6, 6, 6, 6, 6, 6, 6, 6, 6,
-	7, 7, 7, 7, 7, 7, 7, 7, 7,
-	8, 8, 8, 8, 8, 8, 8, 8, 8,
-}
-
-var cellCols = [81]int{
-	0, 1, 2, 3, 4, 5, 6, 7, 8,
-	0, 1, 2, 3, 4, 5, 6, 7, 8,
-	0, 1, 2, 3, 4, 5, 6, 7, 8,
-	0, 1, 2, 3, 4, 5, 6, 7, 8,
-	0, 1, 2, 3, 4, 5, 6, 7, 8,
-	0, 1, 2, 3, 4, 5, 6, 7, 8,
-	0, 1, 2, 3, 4, 5, 6, 7, 8,
-	0, 1, 2, 3, 4, 5, 6, 7, 8,
-	0, 1, 2, 3, 4, 5, 6, 7, 8,
-}
-
-const Empty = '0'
 
 func IsValidSudoku(puzzle string) bool {
 	if len(puzzle) != 81 {

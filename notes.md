@@ -46,14 +46,19 @@ So far I have:
 - I copied in my brute force sudoku solver as a fake implementation for `solve_sudoku`
   - this doesn't interoperate with the `sudoku` package at all
 
+- [x] remove redundant `IsValidSudoku` check
+  - [x] `sudoku.New` should return `ErrInvalid` for puzzles/2.invalid without calling `IsValidSudoku`
+
+- [ ] implement a command that gets the next step towards solving the puzzle
+  - e.g. if you provide a puzzle with a naked single in one position, the command prints something like `naked single in rXcY` and maybe the next state after filling in the naked single
+  - internally we could have a unit testable interface that returns a struct defining the next action to take
+
 ---
 
 # Scratch
 
 - [ ] expect output to contain "naked single" when there's a naked single
-- [x] start unit tests
-- [ ] accept puzzle on stdin
-- [ ] implement a command that gets the next step towards solving the puzzle
-  - e.g. if you provide a puzzle with a naked single in one position, the command prints something like `naked single in rXcY` and maybe the next state after filling in the naked single
-  - internally we could have a unit testable interface that returns a struct defining the next action to take
 - [ ] enable using the puzzles from `./tests/puzzles` as Go test fixtures to avoid duplication
+  - create a package that embeds the puzzles directory
+- [ ] instead of requiring puzzles to be provided as an 81 char string, make `solve_sudoku` handle ignoring whitespace and comments
+  - [ ] accept puzzle on stdin

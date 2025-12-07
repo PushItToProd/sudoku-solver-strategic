@@ -61,11 +61,7 @@ squash_stdin() {
 }
 
 read_puzzle() {
-  local puzzle_path="$PUZZLES_DIR"/"$1"
-  if [[ ! -f "$puzzle_path" ]]; then
-    test::fatal "Unable to get puzzle with id '$1'"
-  fi
-  squash_stdin <"$puzzle_path"
+  bash "$SCRIPT_DIR"/read_puzzle.sh "$1"
 }
 
 main() {

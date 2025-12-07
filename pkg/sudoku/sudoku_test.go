@@ -32,14 +32,16 @@ func TestNew(t *testing.T) {
 			expectErr: false,
 		},
 		{
-			desc:      "invalid and unsolved",
-			puzzle:    "028956417756214938491387256685791342349628175127435689562173894814569723973842561",
-			expectErr: true,
+			desc:           "invalid and unsolved",
+			puzzle:         "028956417756214938491387256685791342349628175127435689562173894814569723973842561",
+			expectErr:      true,
+			expectedErrMsg: "invalid puzzle",
 		},
 		{
-			desc:      "invalid and complete",
-			puzzle:    "228956417756214938491387256685791342349628175127435689562173894814569723973842561",
-			expectErr: true,
+			desc:           "invalid and complete",
+			puzzle:         "228956417756214938491387256685791342349628175127435689562173894814569723973842561",
+			expectErr:      true,
+			expectedErrMsg: "invalid puzzle",
 		},
 		{
 			desc:           "fully solved",
@@ -54,7 +56,11 @@ func TestNew(t *testing.T) {
 
 			if tc.expectErr {
 				if err == nil {
-					t.Error("expected error but got none")
+					if tc.expectedErrMsg != "" {
+						t.Errorf("expected error containing %q but got (nil)", tc.expectedErrMsg)
+					} else {
+						t.Error("expected error but got nil")
+					}
 				} else if gotErrMsg := err.Error(); tc.expectedErrMsg != "" && !strings.Contains(gotErrMsg, tc.expectedErrMsg) {
 					t.Errorf("expected error containing %q but got %q", tc.expectedErrMsg, gotErrMsg)
 				}

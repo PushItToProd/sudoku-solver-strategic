@@ -18,13 +18,8 @@ func New(puzzle string) (BoardState, error) {
 	if len(puzzle) > 81 {
 		return "", ErrTooLong
 	}
-	// FIXME: remove this.
-	// Currently, tests/puzzles/2.invalid is incorrectly accepted if this check isn't here.
-	if !IsValidSudoku(puzzle) {
-		return "", ErrInvalid
-	}
 	state := Check(puzzle)
-	if !state.IsValid() {
+	if !state.IsValid() || !state.IsCorrect() {
 		return "", ErrInvalid
 	}
 	if state.IsSolved() {

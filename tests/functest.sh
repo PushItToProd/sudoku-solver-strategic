@@ -2,7 +2,6 @@
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$SCRIPT_DIR/.."
-PUZZLES_DIR="$SCRIPT_DIR/puzzles"
 
 failed=0
 
@@ -25,22 +24,6 @@ test::check_result() {
     echo "All tests passed!"
   fi
 }
-
-# _capture_stdout() {
-#   __captured_stdout="$(cat)"
-# }
-
-# assert::stdout() {
-#   local expected="${1?}"
-#   _capture_stdout
-#   if ! grep -q "$expected" <<<"$__captured_stdout"; then
-#     local msg="$2"
-#     if [[ ! "$msg" ]]; then
-#       msg="expected output to contain "
-#     fi
-#     test::fail ""
-#   fi
-# }
 
 run_cmd() {
   local cmd="$1"

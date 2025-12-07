@@ -28,49 +28,6 @@ func New(puzzle string) (BoardState, error) {
 	return BoardState(puzzle), nil
 }
 
-func IsValidSudoku(puzzle string) bool {
-	if len(puzzle) != 81 {
-		return false
-	}
-
-	rows := [9][9]bool{}
-	cols := [9][9]bool{}
-	houses := [9][9]bool{}
-
-	for i, c := range puzzle {
-		row := cellRows[i]
-		col := cellCols[i]
-		house := cellHouses[i]
-
-		if c == Empty {
-			// ignore empties
-			continue
-		}
-
-		if !(c >= '1' && c <= '9') {
-			// invalid character
-			return false
-		}
-		d := int(c) - '1'
-		if rows[row][d] {
-			return false
-		}
-		rows[row][d] = true
-
-		if cols[col][d] {
-			return false
-		}
-		cols[col][d] = true
-
-		if houses[house][d] {
-			return false
-		}
-		houses[house][d] = true
-	}
-
-	return true
-}
-
 type SudokuState struct {
 	// A sudoku is valid if it is a string of exactly 81 characters that are either filled with valid digits '1' through
 	// '9' or are empty ('0').
